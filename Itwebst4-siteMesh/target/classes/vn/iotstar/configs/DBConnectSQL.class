@@ -1,0 +1,36 @@
+// Source code is decompiled from a .class file using FernFlower decompiler.
+package vn.iotstar.configs;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+public class DBConnectSQL {
+   private final String serverName = "localhost";
+   private final String dbName = "ltwebst4";
+   private final String portNumber = "53734";
+   private final String instance = "";
+   private final String userID = "sa";
+   private final String password = "danhtan";
+
+   public DBConnectSQL() {
+   }
+
+   public Connection getDBConnection() throws Exception {
+      String url = "jdbc:sqlserver://localhost:53734\\;databaseName=ltwebst4";
+      if ("" == null || "".trim().isEmpty()) {
+         url = "jdbc:sqlserver://localhost:53734;databaseName=ltwebst4";
+      }
+
+      Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+      return DriverManager.getConnection(url, "sa", "danhtan");
+   }
+
+   public static void main(String[] args) {
+      try {
+         System.out.println((new DBConnectSQL()).getDBConnection());
+      } catch (Exception var2) {
+         var2.printStackTrace();
+      }
+
+   }
+}
