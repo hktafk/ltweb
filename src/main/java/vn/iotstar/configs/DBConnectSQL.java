@@ -14,7 +14,7 @@ public class DBConnectSQL {
 	private final String userID = "sa";
 	private final String password = "yenkhang";
 
-	public Connection getConnection() throws Exception {
+	public Connection getDBConnection() throws Exception {
 		Connection conn = null;
 
 		try {
@@ -49,7 +49,7 @@ public class DBConnectSQL {
 //Test chương trình. Kích phải chuột  chọn run as -> java application
 	public static void main(String[] args) {
 		try {
-			System.out.println(new DBConnectSQL().getConnection());
+			System.out.println(new DBConnectSQL().getDBConnection());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

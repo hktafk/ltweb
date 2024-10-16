@@ -3,118 +3,108 @@ package vn.iotstar.models;
 import java.io.Serializable;
 import java.sql.Date;
 
-public class UserModel implements Serializable {
-
+public class UserModel implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private int id;
-	private String username;
-	private String password;
-	private String images;
-	private String fullname;
 	private String email;
-	private String phone;
-	private int roleId;
-	private Date createDate;
-
+	private String userName;
+	private String fullName;
+	private String passWord;
+	private String images;
+	private int roleid;
+	private String phone;	
+	private Date createdDate;
 	public UserModel() {
 		super();
 	}
-
-	public UserModel(int id, String username, String password, String images, String fullname, String email,
-			String phone, int roleId, Date createDate) {
+	public UserModel(int id, String email, String userName, String fullName, String passWord, String images, int roleid,
+			String phone, Date createdDate) {
 		super();
 		this.id = id;
-		this.username = username;
-		this.password = password;
-		this.images = images;
-		this.fullname = fullname;
 		this.email = email;
+		this.userName = userName;
+		this.fullName = fullName;
+		this.passWord = passWord;
+		this.images = images;
+		this.roleid = roleid;
 		this.phone = phone;
-		this.roleId = roleId;
-		this.createDate = createDate;
+		this.createdDate = createdDate;
 	}
-
+	public UserModel(String email, String userName, String fullName, String passWord, String images, int roleid,
+			String phone, Date createdDate) {
+		super();
+		this.email = email;
+		this.userName = userName;
+		this.fullName = fullName;
+		this.passWord = passWord;
+		this.images = images;
+		this.roleid = roleid;
+		this.phone = phone;
+		this.createdDate = createdDate;
+	}
 	public int getId() {
 		return id;
 	}
-
 	public void setId(int id) {
 		this.id = id;
 	}
-
 	public String getEmail() {
 		return email;
 	}
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	public String getUsername() {
-		return username;
+	public String getUserName() {
+		return userName;
 	}
-
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
-
-	public String getFullname() {
-		return fullname;
+	public String getFullName() {
+		return fullName;
 	}
-
-	public void setFullname(String fullname) {
-		this.fullname = fullname;
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
-
-	public String getPassword() {
-		return password;
+	public String getPassWord() {
+		return passWord;
 	}
-
-	public void setPassword(String password) {
-		this.password = password;
+	public void setPassWord(String passWord) {
+		this.passWord = passWord;
 	}
-
 	public String getImages() {
 		return images;
 	}
-
 	public void setImages(String images) {
 		this.images = images;
 	}
-
-	public int getroleId() {
-		return roleId;
+	public int getRoleid() {
+		return roleid;
 	}
-
-	public void setroleid(int roleId) {
-		this.roleId = roleId;
+	public void setRoleid(int roleid) {
+		this.roleid = roleid;
 	}
-
 	public String getPhone() {
 		return phone;
 	}
-
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-
-	public Date getCreateDate() {
-		return createDate;
+	public Date getCreatedDate() {
+		return createdDate;
 	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-
 	@Override
 	public String toString() {
-		return "UserModel [id=" + id + ", username=" + username + ", password=" + password + ", images=" + images
-				+ ", fullname=" + fullname + ", email=" + email + ", phone=" + phone + ", roleId=" + roleId
-				+ ", createDate=" + createDate + "]";
+		return "UserModel [id=" + id + ", email=" + email + ", userName=" + userName + ", fullName=" + fullName
+				+ ", passWord=" + passWord + ", images=" + images + ", roleid=" + roleid + ", phone=" + phone
+				+ ", createdDate=" + createdDate + "]";
 	}
-
+	
+	
 }

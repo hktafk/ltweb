@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import vn.iotstar.services.IUserService;
-import vn.iotstar.services.impl.UserService;
+import vn.iotstar.services.impl.UserServiceImpl;
 import vn.iotstar.utils.Constant;
 
 @WebServlet(urlPatterns = "/register")
@@ -49,7 +49,7 @@ public class RegisterController extends HttpServlet {
 		String email = req.getParameter("email");
 		String fullname = req.getParameter("fullname");
 		String phone = req.getParameter("phone");
-		IUserService service = new UserService();
+		IUserService service = new UserServiceImpl();
 		String alertMsg = "";
 		if (service.checkExistEmail(email)) {
 			alertMsg = "Email đã tồn tại!";

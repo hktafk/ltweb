@@ -5,14 +5,13 @@ import vn.iotstar.dao.impl.UserDaoImpl;
 import vn.iotstar.models.UserModel;
 import vn.iotstar.services.IUserService;
 
-public class UserService implements IUserService {
-
-	IUserDao userDao = new UserDaoImpl(); // Lấy toàn bộ hàm trong tầng Dao của user
-
+public class UserServiceImpl implements IUserService{
+	IUserDao userDao = new UserDaoImpl();
+	
 	@Override
 	public UserModel login(String username, String password) {
 		UserModel user = this.FindByUserName(username);
-		if (user != null && password.equals(user.getPassword())) {
+		if (user != null && password.equals(user.getPassWord())) {
 			return user;
 		}
 		return null;
@@ -22,7 +21,6 @@ public class UserService implements IUserService {
 	public UserModel FindByUserName(String username) {
 		return userDao.findByUserName(username);
 	}
-
 	@Override
 	public void insert(UserModel user) {
 		userDao.insert(user);
@@ -30,13 +28,13 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public boolean register( String username, String password, String fullname, String email, String phone) {
+	public boolean register(String email, String password, String username, String fullname, String phone) {
 		if (userDao.checkExistUsername(username)) {
 			return false;
 		}
 		long millis = System.currentTimeMillis();
 		java.sql.Date date = new java.sql.Date(millis);
-		userDao.insert(new UserModel(0, username, password, null, fullname, email, phone, 3, date));
+		userDao.insert(new UserModel(email, username, fullname,password,null,5,phone,date));
 		return true;
 	}
 
@@ -54,5 +52,4 @@ public class UserService implements IUserService {
 	public boolean checkExistPhone(String phone) {
 		return userDao.checkExistPhone(phone);
 	}
-
 }

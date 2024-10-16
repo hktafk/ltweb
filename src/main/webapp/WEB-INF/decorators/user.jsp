@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="jakarta.tags.core"%>
-<%@ include file="/common/taglib.jsp"%>
+<%@ include file="/commons/taglib.jsp"%>
 <c:url value="/" var="URL">
 </c:url>
 <!DOCTYPE html>
@@ -81,11 +81,11 @@
 
 
 	<!-- Begin Header -->
-	<%@ include file="/common/web/header.jsp"%>
+	<%@ include file="/commons/web/header.jsp"%>
 	<!-- End Header -->
 
 	<!-- Begin Slider -->
-	<%@ include file="/common/web/slider.jsp"%>
+	<%@ include file="/commons/web/slider.jsp"%>
 	<!-- End Slider -->
 
 	<div class="main">
@@ -101,7 +101,7 @@
 
 	
 	<!-- Begin Footer -->
-			<%@ include file="/common/web/footer.jsp"%>
+			<%@ include file="/commons/web/footer.jsp"%>
 			<!-- End Footer -->
 
 

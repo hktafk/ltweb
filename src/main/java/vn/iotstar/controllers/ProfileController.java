@@ -59,7 +59,7 @@ public class ProfileController extends HttpServlet{
                 String filePath = uploadPath + "/" + fileName;
                 filePart.write(filePath);
             }
-            user.setFullname(fullname);
+            user.setFullName(fullname);
             user.setEmail(email);
             user.setPhone(phone);
             if (fileName != null) {

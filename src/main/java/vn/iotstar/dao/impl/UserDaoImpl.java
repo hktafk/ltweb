@@ -1,6 +1,7 @@
 package vn.iotstar.dao.impl;
 
 import java.sql.Connection;
+//import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +12,8 @@ import vn.iotstar.configs.DBConnectSQL;
 import vn.iotstar.dao.IUserDao;
 import vn.iotstar.models.UserModel;
 
-public class UserDaoImpl extends DBConnectSQL implements IUserDao {
+public class UserDaoImpl extends DBConnectSQL implements IUserDao{
+	
 	public Connection conn = null;
 	public PreparedStatement ps = null;
 	public ResultSet rs = null;
@@ -22,20 +24,19 @@ public class UserDaoImpl extends DBConnectSQL implements IUserDao {
 		List<UserModel> list = new ArrayList<>(); // Tao 1 list de truyen du lieu
 
 		try {
-			conn = super.getConnection();
+			conn = super.getDBConnection();
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
 
 			while (rs.next())/* Next tung dong toi cuoi bang */ {
 				list.add(new UserModel(rs.getInt("id"), 
-						
-						rs.getString("username"),
-						rs.getString("password"),
-						rs.getString("images"),
-						rs.getString("fullname"), 
 						rs.getString("email"), 
-						rs.getString("phone"),
+						rs.getString("username"),
+						rs.getString("fullname"), 
+						rs.getString("password"), 
+						rs.getString("images"), 
 						rs.getInt("roleid"),
+						rs.getString("phone"), 
 						rs.getDate("createDate")));
 			}
 			return list;
@@ -55,21 +56,21 @@ public class UserDaoImpl extends DBConnectSQL implements IUserDao {
 	public UserModel findById(int id) {
 		String sql = "SELECT * FROM users WHERE id = ? ";
 		try {
-			conn = super.getConnection();
+			conn = new DBConnectSQL().getDBConnection();
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				UserModel user = new UserModel();
 				user.setId(rs.getInt("id"));
-				user.setUsername(rs.getString("username"));
-				user.setPassword(rs.getString("password"));
-				user.setImages(rs.getString("images"));
-				user.setFullname(rs.getString("fullname"));
 				user.setEmail(rs.getString("email"));
+				user.setUserName(rs.getString("username"));
+				user.setFullName(rs.getString("fullname"));
+				user.setPassWord(rs.getString("password"));
+				user.setImages(rs.getString("Images"));
+				user.setRoleid(Integer.parseInt(rs.getString("roleid")));
 				user.setPhone(rs.getString("phone"));
-				user.setroleid(Integer.parseInt(rs.getString("roleid")));
-				user.setCreateDate(rs.getDate("createdDate"));
+				user.setCreatedDate(rs.getDate("createDate"));
 				return user; 
 			}
 		} catch (Exception e) {
@@ -79,19 +80,18 @@ public class UserDaoImpl extends DBConnectSQL implements IUserDao {
 	};
 	
 	public void insert(UserModel user) {
-	    String sql = "INSERT INTO users ( username, password, images, fullname, phone, email, roleid, createdDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	    String sql = "INSERT INTO users (email, username, fullname, password, images, roleid, phone, createDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	    try {
-	        conn = super.getConnection();
+	        conn = super.getDBConnection();
 	        ps = conn.prepareStatement(sql);
-	        
-	        ps.setString(2, user.getUsername());
-	        ps.setString(4, user.getPassword());
+	        ps.setString(1, user.getEmail());
+	        ps.setString(2, user.getUserName());
+	        ps.setString(3, user.getFullName());
+	        ps.setString(4, user.getPassWord());
 	        ps.setString(5, user.getImages());
-	        ps.setString(3, user.getFullname());	        
-	        ps.setString(1, user.getEmail());	
+	        ps.setInt(6, user.getRoleid());
 	        ps.setString(7, user.getPhone());
-	        ps.setInt(6, user.getroleId());        
-	        ps.setDate(8, user.getCreateDate());
+	        ps.setDate(8, user.getCreatedDate());
 	        ps.executeUpdate();
 	    } catch (Exception e) {
 	        e.printStackTrace();
@@ -108,21 +108,21 @@ public class UserDaoImpl extends DBConnectSQL implements IUserDao {
 	public UserModel findByUserName(String username) {
 		String sql = "SELECT * FROM users WHERE username = ? ";
 		try {
-			conn = super.getConnection();
+			conn = super.getDBConnection();
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, username);
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				UserModel user = new UserModel();
 				user.setId(rs.getInt("id"));
-				user.setUsername(rs.getString("username"));
-				user.setPassword(rs.getString("password"));
-				user.setImages(rs.getString("images"));
-				user.setFullname(rs.getString("fullname"));
 				user.setEmail(rs.getString("email"));
+				user.setUserName(rs.getString("username"));
+				user.setFullName(rs.getString("fullname"));
+				user.setPassWord(rs.getString("password"));
+				user.setImages(rs.getString("Images"));
+				user.setRoleid(Integer.parseInt(rs.getString("roleid")));
 				user.setPhone(rs.getString("phone"));
-				user.setroleid(Integer.parseInt(rs.getString("roleid")));				
-				user.setCreateDate(rs.getDate("createdDate"));
+				user.setCreatedDate(rs.getDate("createDate"));
 				return user; 
 			}
 		} catch (Exception e) {
@@ -132,14 +132,21 @@ public class UserDaoImpl extends DBConnectSQL implements IUserDao {
 	}
 
 	
-	
+	public static void main(String[] args) {
+		try {
+			IUserDao userDao = new UserDaoImpl(); 
+			System.out.println(userDao.findByUserName("tandanh"));
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public boolean checkExistEmail(String email) {
 		boolean duplicate = false;
 		String query = "SELECT * FROM users WHERE email = ?";
 		try {
-			conn = super.getConnection();
+			conn = super.getDBConnection();
 			ps = conn.prepareStatement(query);
 			ps.setString(1, email);
 			rs = ps.executeQuery();
@@ -159,7 +166,7 @@ public class UserDaoImpl extends DBConnectSQL implements IUserDao {
 		boolean duplicate = false;
 		String query = "SELECT * FROM users WHERE username = ?";
 		try {
-			conn = super.getConnection();
+			conn = super.getDBConnection();
 			ps = conn.prepareStatement(query);
 			ps.setString(1, username);
 			rs = ps.executeQuery();
@@ -179,7 +186,7 @@ public class UserDaoImpl extends DBConnectSQL implements IUserDao {
 		boolean duplicate = false;
 		String query = "SELECT * FROM users WHERE phone = ?";
 		try {
-			conn = super.getConnection();
+			conn = super.getDBConnection();
 			ps = conn.prepareStatement(query);
 			ps.setString(1, phone);
 			rs = ps.executeQuery();
@@ -195,13 +202,13 @@ public class UserDaoImpl extends DBConnectSQL implements IUserDao {
 
 	public int editProfile(UserModel user) {
 		int ketQua = 0;
-		String query = "UPDATE users SET images = ?, fullname = ?, email=?, phone = ? WHERE id=?";
+		String query = "UPDATE users SET email=? , fullname = ?, images = ?, phone = ? WHERE id=?";
 		try {
-			conn = super.getConnection();
+			conn = super.getDBConnection();
 			ps = conn.prepareStatement(query);
+			ps.setString(1, user.getEmail());
+			ps.setString(2, user.getFullName());
 			ps.setString(3, user.getImages());
-			ps.setString(2, user.getFullname());
-			ps.setString(1, user.getEmail());	
 			ps.setString(4, user.getPhone());
 			ps.setInt(5, user.getId());
 			ketQua = ps.executeUpdate();
@@ -210,27 +217,7 @@ public class UserDaoImpl extends DBConnectSQL implements IUserDao {
 		}
 		return ketQua;
 	}
-
-
-	public static void main(String[] args) {
-		try {
-
-			IUserDao userDao = new UserDaoImpl();
-			//System.out.println(userDao.findById(4));
-			//System.out.println(userDao.findByUserName("danhhop"));
-			//System.out.println(userDao.findByUserName("ngocduong"));
-			//System.out.println(userDao.findAll());
-			// userDao.insert(new UserModel(3, "abc", "abc@gmail.com", "Khang", "123", ""));
-
-			
-			
-			/*
-			 * List<UserModel> list = userDao.findAll(); for (UserModel user : list) {
-			 * System.out.println(user); }
-			 */
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	
+	
+	
 }

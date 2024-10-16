@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 
 	<!-- Begin Brands -->
-	<%@ include file="/common/web/slider.jsp" %>
+	<%@ include file="/commons/web/slider.jsp" %>
 	<!-- End Brands -->
 
 	<!-- BEGIN SALE PRODUCT & NEW ARRIVALS -->
@@ -383,11 +383,11 @@
     <!-- END TWO PRODUCTS & PROMO -->
     
     <!-- Begin Brands -->
-	<%@ include file="/common/web/brands.jsp" %>
+	<%@ include file="/commons/web/brands.jsp" %>
 	<!-- End Brands -->
 	
 	<!-- Begin Steps -->
-	<%@ include file="/common/web/steps.jsp" %>
+	<%@ include file="/commons/web/steps.jsp" %>
 	<!-- End Steps -->
 	
 	
