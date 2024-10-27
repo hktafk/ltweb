@@ -6,7 +6,7 @@ import vn.iotstar.models.UserModel;
 
 public interface IUserDao {
 	
-List<UserModel> findAll();
+List<UserModel> findALL();
 	
 	UserModel findById(int id);
 	

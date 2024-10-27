@@ -5,7 +5,7 @@
 https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
 	version="6.0">
 
-	<display-name>Itwebst4</display-name>
+	<display-name>ltwebst4</display-name>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.htm</welcome-file>

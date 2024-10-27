@@ -18,7 +18,7 @@ public class UserDaoImpl extends DBConnectSQL implements IUserDao{
 	public PreparedStatement ps = null;
 	public ResultSet rs = null;
 	
-	public List<UserModel> findAll(){
+	public List<UserModel> findALL(){
 		String sql = "SELECT * FROM users";
 
 		List<UserModel> list = new ArrayList<>(); // Tao 1 list de truyen du lieu
@@ -132,14 +132,6 @@ public class UserDaoImpl extends DBConnectSQL implements IUserDao{
 	}
 
 	
-	public static void main(String[] args) {
-		try {
-			IUserDao userDao = new UserDaoImpl(); 
-			System.out.println(userDao.findByUserName("tandanh"));
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	@Override
 	public boolean checkExistEmail(String email) {
@@ -219,5 +211,13 @@ public class UserDaoImpl extends DBConnectSQL implements IUserDao{
 	}
 	
 	
-	
+	public static void main(String[] args) {
+		try {
+			IUserDao userDao = new UserDaoImpl(); 
+			System.out.println(userDao.findByUserName("yenkhang"));
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }
