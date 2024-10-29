@@ -17,7 +17,7 @@
 		if (fileInput.files && fileInput.files[0]) {
 			var reader = new FileReader();
 			reader.onload = function(e) {
-				$('#images').attr('src', e.target.result);
+				$('#imagess').attr('src', e.target.result);
 			}		
 			reader.readAsDataURL(fileInput.files[0]);
 		}

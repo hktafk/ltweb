@@ -1,17 +1,27 @@
 package vn.iotstar.controllers.admin;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import vn.iotstar.models.CategoryModel;
 import vn.iotstar.services.ICategoryService;
 import vn.iotstar.services.impl.CategoryServiceImpl;
+import static vn.iotstar.utils.Constant.*;
 
+@MultipartConfig(
+		fileSizeThreshold = 1024 * 1024, // 1 MB
+	    maxFileSize = 1024 * 1024 * 5,  // 10 MB
+	    maxRequestSize = 1024 * 1024 * 5 * 5 // 50 MB
+	    )
 @WebServlet(urlPatterns = {"/admin/categories","/admin/category/add",
 		"/admin/category/insert","/admin/category/edit","/admin/category/update",
 		"/admin/category/delete","/admin/category/search"})
@@ -55,33 +65,85 @@ public class CategoryController extends  HttpServlet{
 		req.setCharacterEncoding("UTF-8");
 		resp.setCharacterEncoding("UTF-8");
 		
-		if(url.contains("insert")) {
+		if(url.contains("/admin/category/insert")) {
 		
 			String categoryname = req.getParameter("categoryname");
 			String status = req.getParameter("status");
 			int statuss = Integer.parseInt(status);
-			String images = "https://farm2.staticflickr.com/1904/31005812318_2a8971c140_b.jpg";
+			
 			
 			CategoryModel category = new CategoryModel();
 			category.setCategoryname(categoryname);
-			category.setImages(images);
 			category.setStatus(statuss);
+			
+			
+			String fname="";
+			String uploadPath= UPLOAD_DIRECTORY;
+			File uploadDir = new File(uploadPath);
+			if(!uploadDir.exists()) {
+				uploadDir.mkdir();
+			}
+			try {
+				Part part = req.getPart("images");
+				if(part.getSize()>0) {
+					String filename = Paths.get(part.getSubmittedFileName()).getFileSystem().toString();
+					//đổi tên file
+					int index = filename.lastIndexOf(".");
+					String ext = filename.substring(index+1);
+					fname = System.currentTimeMillis() + "." + ext;
+					//upload file
+					part.write(uploadPath + "/" + fname);
+					//ghi tên file vào data
+					category.setImages(fname);
+				}else {
+					category.setImages("avatar.png");
+					}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			
 			cateService.insert(category);
 			resp.sendRedirect(req.getContextPath() + "/admin/categories");
-		}else if (url.contains("update")){
+		}else if (url.contains("admin/category/update")){
+			CategoryModel category = new CategoryModel();
 			int categoryid = Integer.parseInt(req.getParameter("categoryid"));
 			String categoryname = req.getParameter("categoryname");
 			String status = req.getParameter("status");
 			int statuss = Integer.parseInt(status);
-			String images = "https://farm2.staticflickr.com/1904/31005812318_2a8971c140_b.jpg";
-			
-			CategoryModel category = new CategoryModel();
+			category.setStatus(statuss);
 			category.setCategoryid(categoryid);
 			category.setCategoryname(categoryname);
-			category.setImages(images);
-			category.setStatus(statuss);
 			
+			//lưu hình cũ
+			CategoryModel cateold = cateService.findById(categoryid);
+			String fileold = cateold.getImages();
+			//xử lý image
+			
+			
+			String fname="";
+			String uploadPath= UPLOAD_DIRECTORY;
+			File uploadDir = new File(uploadPath);
+			if(!uploadDir.exists()) {
+				uploadDir.mkdir();
+			}
+			try {
+				Part part = req.getPart("images");
+				if(part.getSize()>0) {
+					String filename = Paths.get(part.getSubmittedFileName()).getFileSystem().toString();
+					//đổi tên file
+					int index = filename.lastIndexOf(".");
+					String ext = filename.substring(index+1);
+					fname = System.currentTimeMillis() + "." + ext;
+					//upload file
+					part.write(uploadPath + "/" + fname);
+					//ghi tên file vào data
+					category.setImages(fname);
+				}else {
+					category.setImages(fileold);
+					}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			cateService.update(category);
 			resp.sendRedirect(req.getContextPath() + "/admin/categories");
 		}
